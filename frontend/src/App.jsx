@@ -24,7 +24,7 @@ function App() {
                 <Route path="/planner" element={<Planner />} />
                 <Route path="/budget" element={<Budget />} />
                 <Route path="/weather" element={<Weather />} />
-                <Route path="/blogs" element={< Blogs />} />
+                <Route path="/blogs" element={<Blogs />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/my-trips" element={<MyTrips />} />
                 <Route path="/profile" element={<Profile />} />
