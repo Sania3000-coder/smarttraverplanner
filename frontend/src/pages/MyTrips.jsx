@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config/api";
 
 function MyTrips() {
     const [trips, setTrips] = useState([]);
@@ -16,7 +17,7 @@ function MyTrips() {
             }
 
             const response = await fetch(
-                "http://localhost:5000/api/trips/my-trips",
+                `${API_BASE_URL}/api/trips/my-trips`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -47,7 +48,7 @@ function MyTrips() {
             const token = localStorage.getItem("token");
 
             const response = await fetch(
-                `http://localhost:5000/api/trips/${id}`,
+                `${API_BASE_URL}/api/trips/${id}`,
                 {
                     method: "DELETE",
                     headers: {

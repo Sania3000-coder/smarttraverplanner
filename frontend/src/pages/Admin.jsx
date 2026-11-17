@@ -1,8 +1,9 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 
-const API = "http://localhost:5000/api/admin";
+const API = `${API_BASE_URL}/api/admin`;
 
 function Admin() {
   const navigate = useNavigate();

@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 
 function ItineraryDisplay({ text }) {
   const lines = text.split("\n");
@@ -212,7 +213,7 @@ FORMATTING RULES:
 
       try {
         const response = await fetch(
-          "http://localhost:5000/api/chatbot",
+          `${API_BASE_URL}/api/chatbot`,
           {
             method: "POST",
             headers: {
@@ -281,7 +282,7 @@ FORMATTING RULES:
       setPlanned(false);
 
       const response = await fetch(
-        "http://localhost:5000/api/trips/save",
+        `${API_BASE_URL}/api/trips/save`,
         {
           method: "POST",
           headers: {

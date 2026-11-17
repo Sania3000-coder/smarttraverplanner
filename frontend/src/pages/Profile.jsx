@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 
 function Profile() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function Profile() {
       return;
     }
 
-    fetch("http://localhost:5000/api/profile", {
+    fetch(`${API_BASE_URL}/api/profile`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -71,7 +72,7 @@ function Profile() {
       setSaving(true);
 
       const res = await fetch(
-        "http://localhost:5000/api/profile/update",
+        `${API_BASE_URL}/api/profile/update`,
         {
           method: "PUT",
           headers: {
