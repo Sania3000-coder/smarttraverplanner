@@ -22,6 +22,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Normalize URLs if Vercel rewrites append the file path
+app.use((req, res, next) => {
+    if (req.url.startsWith("/server.js")) {
+        req.url = req.url.replace(/^\/server\.js/, "") || "/";
+    }
+    next();
+});
+
 // Ensure database is connected before handling API requests
 app.use(async (req, res, next) => {
     try {
@@ -32,23 +40,43 @@ app.use(async (req, res, next) => {
     next();
 });
 
-// Authentication routes
-app.use("/api/auth", authRoutes);
-app.use("/api/trips", tripRoutes);
-app.use("/api/profile", profileRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/chatbot", chatbotRoutes);
-
 // Home route
 app.get("/", (req, res) => {
-    res.send("Smart Travel Planner Backend is Running!");
+    res.json({
+        success: true,
+        message: "Smart Travel Planner Backend is Running!"
+    });
 });
 
-// Test API
-app.get("/api/test", (req, res) => {
+// Test API (supports both /api/test and /test)
+app.get(["/api/test", "/test"], (req, res) => {
     res.json({
         success: true,
         message: "Backend API is Working!"
+    });
+});
+
+// API Routes (supports both /api/<route> and /<route> for Vercel serverless rewrites)
+app.use(["/api/auth", "/auth"], authRoutes);
+app.use(["/api/trips", "/trips"], tripRoutes);
+app.use(["/api/profile", "/profile"], profileRoutes);
+app.use(["/api/admin", "/admin"], adminRoutes);
+app.use(["/api/chatbot", "/chatbot"], chatbotRoutes);
+
+// Catch-all 404 handler that always returns JSON (never returns HTML <!DOCTYPE...)
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: `Route not found: ${req.method} ${req.originalUrl || req.url}`
+    });
+});
+
+// Global error handler that always returns JSON
+app.use((err, req, res, next) => {
+    console.error("Server Error:", err);
+    res.status(err.status || 500).json({
+        success: false,
+        message: err.message || "Internal server error"
     });
 });
 
